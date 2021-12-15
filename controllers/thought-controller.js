@@ -90,12 +90,12 @@ const thoughtController = {
     addReaction({ params, body }, res) {
       Thought.findOneAndUpdate(
         { _id: params.thoughtId },
-        { $push: { replies: body } },
+        { $push: { reactions: body } },
         { new: true }
       )
         .then(dbUserData => {
           if (!dbUserData) {
-            res.status(404).json({ message: 'No user found with this id!' });
+            res.status(404).json({ message: 'No thought found with this id!' });
             return;
           }
           res.json(dbUserData);
@@ -105,9 +105,10 @@ const thoughtController = {
 
     // remove reaction
     removeReaction({ params }, res) {
+      console.log("max")
       Thought.findOneAndUpdate(
-        { _id: params.ThoughtId },
-        { $pull: { replies: { reactionId: params.reactionId } } },
+        { _id: params.thoughtId },
+        { $pull: { reactions: { reactionId: params.reactionId } } },
         { new: true }
       )
         .then(dbUserData => res.json(dbUserData))
